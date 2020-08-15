@@ -17,23 +17,42 @@ function showWeather(city) {
             var wind = $("<div>").text("Wind Speed: " + res.wind.speed + "")
             $.get("https://api.openweathermap.org/data/2.5/uvi?lat=" + res.coord.lat + "&lon=" + res.coord.lon + "&appid=" + apiKey)
                 .then(function (uvRes) {
+                    console.log(uvRes)
                     var uv = $("<div>").text("UV Index: " + uvRes.value)
+                    if (uvRes.value > 7) {
+                        uv.attr("style", "color: red")
+                    if (uvRes.vlue <= 7 && uvRes.value >= 4) {
+                        uv.attr("style", "color : orange")
+                    uvRes.value < 4
+                        uv.attr("style", "color: green")
+                    }
+                    }
+                    
                     jumbotron.append(cityName, tempText, humidity, wind, uv)
                     $("#currentWeather").append(jumbotron)
                 })
         })
             
+        $.get("https://api.openweathermap.org/data/2.5/forecast?units=imperial&q=" + city + "&appid=" + apiKey)
+        .then(function (response) {
+            
+    for (let i = 0; i < response.list.length; i++) {
+        if (response.list[i].dt_txt.indexOf("15:00:00") > 0 ) {
+            var res = response.list[i]
+            console.log(response.list[i])
+            
         
-    for (let i = 0; i < 5; i++) {
-        var forecast = $.get("https://api.openweathermap.org/data/2.5/forecast?q=" + city + "&appid=" + apiKey)
-        console.log(forecast)
-        var card = $("<div>").addClass("card bg-primary col-md-2 text-light")
-        var date = $("<div>").text("Date :")
-        var temp = $("<div>").text("Temp: " )
-        var humidity = $("<div>").text("Humidity: ")
-        card.append(date, temp, humidity)
-        $("#futureWeather").append(card)
+        
+            var card = $("<div>").addClass("card bg-primary col-md-2 text-light")
+            var date = $("<div>").text("Date :" + res.dt_txt)
+            var temp = $("<div>").text("Temp: " + response.list[i].main.temp)
+            var humidity = $("<div>").text("Humidity: " + res.main.humidity)
+            card.append(date, temp, humidity)
+            $("#futureWeather").append(card)
+        }
+        
     }
+})
 }       
 function renderList() {
     $("#citySearch").empty()
