@@ -1,14 +1,16 @@
-var apiKey = "be4ba16383051ea85211fa8b62bcb28a"
 
-var prevSearch = JSON.parse(localStorage.getItem("weather")) || []
+
+var apiKey = "be4ba16383051ea85211fa8b62bcb28a"  // set API key to variable
+
+var prevSearch = JSON.parse(localStorage.getItem("weather")) || [] // obtain data from Local storage
 console.log(prevSearch)
 
 function showWeather(city) {
-    $.get("https://api.openweathermap.org/data/2.5/weather?q=" + city + "&units=imperial&appid=" + apiKey)
+    $.get("https://api.openweathermap.org/data/2.5/weather?q=" + city + "&units=imperial&appid=" + apiKey) // obtain info from OW API
         .then(function (res) {
             $("#currentWeather").empty()
             console.log(res)
-            var jumbotron = $("<div>").addClass("jumbotron ")
+            var jumbotron = $("<div>").addClass("jumbotron ") // create jumbotron
             var cityName = $("<h2>").text(res.name + " (" + moment.unix(res.dt).format('L') + ')')
             var img = $("<img>").attr("src", "https://openweathermap.org/img/wn/" + res.weather[0].icon + ".png")
             cityName.append(img)
@@ -33,17 +35,17 @@ function showWeather(city) {
                 })
         })
             
-        $.get("https://api.openweathermap.org/data/2.5/forecast?units=imperial&q=" + city + "&appid=" + apiKey)
+        $.get("https://api.openweathermap.org/data/2.5/forecast?units=imperial&q=" + city + "&appid=" + apiKey) // obtain 5 day forcast from OW API
         .then(function (response) {
             
-    for (let i = 0; i < response.list.length; i++) {
+    for (let i = 0; i < response.list.length; i++) { // for loop to iterate through response
         if (response.list[i].dt_txt.indexOf("15:00:00") > 0 ) {
             var res = response.list[i]
             console.log(response.list[i])
             
         
         
-            var card = $("<div>").addClass("card bg-primary col-md-2 text-light")
+            var card = $("<div>").addClass("card bg-secondary col-md-2 text-light") // creating cards to hold futurecast info
             var date = $("<div>").text("Date : " + res.dt_txt)
             var temp = $("<div>").text("Temp: " + response.list[i].main.temp + " F")
             var humidity = $("<div>").text("Humidity: " + res.main.humidity + " %")
@@ -54,7 +56,7 @@ function showWeather(city) {
     }
 })
 }       
-function renderList() {
+function renderList() {  
     $("#citySearch").empty()
     for (let i = 0; i < prevSearch.length; i++) {
         var div = $("<div>").text(prevSearch[i])
@@ -63,7 +65,7 @@ function renderList() {
         $("#citySearch").prepend(div)
     }
 }
-$(".btn-primary").on("click", function () {
+$(".btn-primary").on("click", function () {  //setting onclick event for search button
     var city = $("#cityName").val()
     prevSearch.push(city)
     localStorage.setItem("weather", JSON.stringify(prevSearch))
