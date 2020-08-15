@@ -44,9 +44,9 @@ function showWeather(city) {
         
         
             var card = $("<div>").addClass("card bg-primary col-md-2 text-light")
-            var date = $("<div>").text("Date :" + res.dt_txt)
-            var temp = $("<div>").text("Temp: " + response.list[i].main.temp)
-            var humidity = $("<div>").text("Humidity: " + res.main.humidity)
+            var date = $("<div>").text("Date : " + res.dt_txt)
+            var temp = $("<div>").text("Temp: " + response.list[i].main.temp + " F")
+            var humidity = $("<div>").text("Humidity: " + res.main.humidity + " %")
             card.append(date, temp, humidity)
             $("#futureWeather").append(card)
         }
